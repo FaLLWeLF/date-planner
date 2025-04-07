@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadwal Pertemuan</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Jadwal Pertemuan Kita ❤️</h1>
+    <form id="dateForm">
+      <label for="date">Tentukan Tanggal : </label>
+      <input type="date" id="date" required>
+
+      <label for="time">Tentukan Waktu : </label>
+      <input type="time" id="time" required>
+
+      <label>Pilih Aktivitas</label>
+      <div class="activities">
+        <div class="activity" data-value="Makan diluar">
+          <img src="makan.jpeg" alt="Pizza Date">
+          <p>Makan diluar</p>
+        </div>
+        <div class="activity" data-value="Jalan - jalan">
+          <img src="jalan.jpeg" alt="London Tour">
+          <p>Jalan-jalan</p>
+        </div>
+        <div class="activity" data-value="Nonton bioskop">
+          <img src="bioskop.jpg" alt="Movie Night">
+          <p>Nonton Bioskop</p>
+        </div>
+      </div>
+      <input type="hidden" id="selectedActivity" required>
+      <button type="submit">Continue ❤️</button>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
