@@ -1,0 +1,148 @@
+/* styles.css - versi cantik & bucin maximal 💖 */
+
+body {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(to right, #ffd6e0, #ffe6f2);
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  animation: fadeInBody 1.5s ease-in;
+}
+
+.container {
+  max-width: 600px;
+  margin: 60px auto;
+  background: #fff0f5;
+  padding: 30px 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
+  animation: popIn 1s ease-out;
+}
+
+h1 {
+  color: #ff4d79;
+  font-size: 28px;
+  margin-bottom: 20px;
+  animation: fadeInDown 1.3s;
+}
+
+p {
+  color: #444;
+  font-size: 16px;
+  margin-bottom: 20px;
+  animation: fadeInUp 1.5s;
+}
+
+button {
+  background-color: #ff4d79;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+  transition: transform 0.3s, background 0.3s;
+}
+
+button:hover {
+  background-color: #e6005c;
+  transform: scale(1.05);
+}
+
+.activities {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.activity {
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #fff;
+  border: 2px dashed transparent;
+}
+
+.activity:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 14px rgba(255, 105, 180, 0.3);
+  border-color: #ff4d79;
+}
+
+.activity.selected {
+  border: 2px solid #ff4d79;
+  background-color: #fff5fa;
+}
+
+.activity img {
+  width: 90px;
+  height: 90px;
+  border-radius: 15px;
+  border: 3px solid #ff4d79;
+  margin-bottom: 8px;
+  transition: transform 0.3s;
+}
+
+.activity img:hover {
+  transform: scale(1.05);
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  color: #e6005c;
+  font-weight: bold;
+}
+
+input[type="date"],
+input[type="time"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 5px;
+  width: 60%;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInBody {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media screen and (max-width: 600px) {
+  .activities {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .activity {
+    width: 80%;
+  }
+
+  input[type="date"],
+  input[type="time"] {
+    width: 90%;
+  }
+}
