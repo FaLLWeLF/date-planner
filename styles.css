@@ -1,53 +1,70 @@
-/* styles.css - versi cantik & bucin maximal 💖 */
+/* Google Font Bucin */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
 
 body {
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  background: linear-gradient(to right, #ffd6e0, #ffe6f2);
-  text-align: center;
   margin: 0;
   padding: 0;
-  animation: fadeInBody 1.5s ease-in;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(to bottom right, #ffd6e0, #ffe6f2);
+  color: #ff4081;
+  text-align: center;
+  position: relative;
+  overflow-x: hidden;
+  animation: fadeIn 1s ease-in;
 }
 
 .container {
   max-width: 600px;
-  margin: 60px auto;
-  background: #fff0f5;
-  padding: 30px 25px;
+  margin: 80px auto;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
-  animation: popIn 1s ease-out;
+  box-shadow: 0 8px 20px rgba(255, 64, 129, 0.3);
+  animation: float 4s ease-in-out infinite;
 }
 
 h1 {
-  color: #ff4d79;
-  font-size: 28px;
+  font-size: 2.2em;
+  color: #e91e63;
   margin-bottom: 20px;
-  animation: fadeInDown 1.3s;
 }
 
 p {
-  color: #444;
-  font-size: 16px;
-  margin-bottom: 20px;
-  animation: fadeInUp 1.5s;
+  font-size: 1.1em;
 }
 
 button {
-  background-color: #ff4d79;
+  margin-top: 20px;
+  background: #ff4081;
   color: white;
-  border: none;
   padding: 12px 24px;
-  border-radius: 30px;
+  font-size: 1em;
+  border: none;
+  border-radius: 25px;
   cursor: pointer;
-  font-size: 16px;
-  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
-  transition: transform 0.3s, background 0.3s;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
-  background-color: #e6005c;
-  transform: scale(1.05);
+  background: #ff1a75;
+  transform: scale(1.1);
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  font-size: 1em;
+}
+
+input[type="date"],
+input[type="time"] {
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ffb6c1;
+  font-family: 'Quicksand', sans-serif;
+  color: #e91e63;
 }
 
 .activities {
@@ -55,94 +72,71 @@ button:hover {
   justify-content: space-around;
   margin-top: 30px;
   flex-wrap: wrap;
-  gap: 15px;
 }
 
 .activity {
   text-align: center;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  padding: 10px;
-  border-radius: 15px;
-  background-color: #fff;
-  border: 2px dashed transparent;
+  transition: transform 0.3s ease;
+  margin: 10px;
 }
 
 .activity:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 14px rgba(255, 105, 180, 0.3);
-  border-color: #ff4d79;
-}
-
-.activity.selected {
-  border: 2px solid #ff4d79;
-  background-color: #fff5fa;
 }
 
 .activity img {
   width: 90px;
   height: 90px;
   border-radius: 15px;
+  border: 3px solid #ff80ab;
+  object-fit: cover;
+}
+
+.activity.selected {
+  transform: scale(1.15);
+  border-radius: 20px;
   border: 3px solid #ff4d79;
-  margin-bottom: 8px;
-  transition: transform 0.3s;
+  animation: glowSelect 0.6s ease-in-out;
+  background-color: #ffe6f2;
+  box-shadow: 0 0 15px #ff99aa;
 }
 
-.activity img:hover {
-  transform: scale(1.05);
+.hearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: url('heart.jpeg');
+  background-repeat: repeat;
+  background-size: 150px;
+  opacity: 0.1;
+  z-index: -1;
 }
 
-label {
-  display: block;
-  margin-top: 20px;
-  color: #e6005c;
-  font-weight: bold;
-}
-
-input[type="date"],
-input[type="time"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 5px;
-  width: 60%;
-  font-size: 15px;
-  margin-bottom: 10px;
-}
-
-/* Animations */
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeInBody {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-@keyframes popIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@media screen and (max-width: 600px) {
-  .activities {
-    flex-direction: column;
-    align-items: center;
+@keyframes glowSelect {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 transparent;
   }
-
-  .activity {
-    width: 80%;
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #ff4d79;
   }
-
-  input[type="date"],
-  input[type="time"] {
-    width: 90%;
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px #ff99aa;
   }
 }
