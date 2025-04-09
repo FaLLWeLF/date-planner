@@ -1,16 +1,277 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pertemuan</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pertemuan Kita ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      text-align: center;
+      background: #ffe6ea;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    section {
+      display: none;
+      animation: fadeIn 1s ease;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #mute-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ff4d79;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      z-index: 999;
+    }
+
+    .activities {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .activity {
+      border: 2px solid transparent;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .activity.selected {
+      border-color: red;
+      background-color: #ffeef0;
+    }
+
+    .activity img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .history-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Hi Nisayy ku sayangg ❤️</h1>
-    <p>Apakah kamu bersedia untuk kita bertemu?</p>
-    <a href="schedule.html"><button>Ya, aku bersedia!</button></a>
-  </div>
+  <!-- BACKSOUND -->
+  <audio id="bg-music" loop>
+    <source src="backsound-penjaga-hati.mp3" type="audio/mpeg">
+  </audio>
+  <button id="mute-toggle" title="Mute/Unmute">🔊</button>
+
+  <!-- HALAMAN INDEX -->
+  <section id="home" class="active">
+    <div class="container">
+      <h1>Hi nisayy ku sayangg ❤️</h1>
+      <p>Apakah kamu bersedia untuk kita bertemu?</p>
+      <button onclick="startExperience()">Ya, aku bersedia!</button>
+    </div>
+  </section>
+
+  <!-- HALAMAN JADWAL -->
+  <section id="schedule">
+    <div class="container">
+      <h1>Jadwal Pertemuan Kita ❤️</h1>
+      <form id="dateForm">
+        <label for="date">Tentukan Tanggal :</label>
+        <input type="date" id="date" required><br><br>
+
+        <label for="time">Tentukan Waktu :</label>
+        <input type="time" id="time" required><br><br>
+
+        <label>Pilih Aktivitas :</label>
+        <div class="activities">
+          <div class="activity" data-value="Makan diluar">
+            <img src="makan.jpeg" alt="Makan" />
+            <p>Makan diluar 🍝</p>
+          </div>
+          <div class="activity" data-value="Jalan - jalan">
+            <img src="jalan.jpeg" alt="Jalan" />
+            <p>Jalan-jalan 🚶‍♀️</p>
+          </div>
+          <div class="activity" data-value="Nonton bioskop">
+            <img src="bioskop.jpg" alt="Bioskop" />
+            <p>Nonton Bioskop 🎬</p>
+          </div>
+          <div class="activity" data-value="Main atau ngobrol">
+            <img src="main.jpg" alt="Main" />
+            <p>Main/ngobrol 🌳</p>
+          </div>
+        </div>
+        <input type="hidden" id="selectedActivity" required />
+        <br>
+        <button type="submit">Lanjut ❤️</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- HALAMAN KONFIRMASI -->
+  <section id="confirmation">
+    <div class="container">
+      <h1>Yeay! ❤️ Ini jadwal kita</h1>
+      <p><strong>Tanggal:</strong> <span id="chosenDate"></span></p>
+      <p><strong>Waktu:</strong> <span id="chosenTime"></span></p>
+      <p><strong>Aktivitas:</strong> <span id="chosenActivity"></span></p>
+      <button onclick="navigateTo('home')">Balik ke Halaman Utama 💌</button>
+      <button onclick="navigateTo('history')">Lihat Riwayat Pertemuan ❤️</button>
+    </div>
+  </section>
+
+  <!-- HALAMAN HISTORY -->
+  <section id="history">
+    <div class="container">
+      <h1 id="secretTrigger">Riwayat Pertemuan Kita 😍</h1>
+      <div id="historyList"></div>
+      <div id="deleteBtnContainer" style="display: none; margin-top: 10px;">
+        <button onclick="clearHistory()" style="background-color: red;">Hapus Semua Riwayat ❌</button>
+      </div>      
+      <button onclick="navigateTo('home')">Kembali ke Halaman Utama</button>
+    </div>
+  </section>
+
+  <!-- SCRIPT -->
+  <script>
+    const music = document.getElementById("bg-music");
+    const muteToggle = document.getElementById("mute-toggle");
+    const selectedActivityInput = document.getElementById("selectedActivity");
+
+    // Mulai backsound setelah klik
+    function startExperience() {
+      music.play().catch(() => {
+        console.log("Autoplay dicegah, tapi sudah dipicu interaksi.");
+      });
+      navigateTo('schedule');
+    }
+
+    // Navigasi antar halaman
+    function navigateTo(sectionId) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(sectionId).classList.add("active");
+
+      if (sectionId === "confirmation") showConfirmation();
+      if (sectionId === "history") showHistory();
+    }
+
+    // Mute toggle
+    muteToggle.addEventListener("click", () => {
+      music.muted = !music.muted;
+      muteToggle.textContent = music.muted ? "🔇" : "🔊";
+    });
+
+    // Pilih aktivitas
+    document.querySelectorAll(".activity").forEach(activity => {
+      activity.addEventListener("click", function () {
+        document.querySelectorAll(".activity").forEach(a => a.classList.remove("selected"));
+        this.classList.add("selected");
+        selectedActivityInput.value = this.getAttribute("data-value");
+      });
+    });
+
+    // Submit jadwal
+    document.getElementById("dateForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const activity = selectedActivityInput.value;
+
+      if (!activity) {
+        alert("Silakan pilih aktivitas sebelum melanjutkan!");
+        return;
+      }
+
+      // Simpan data & histori
+      localStorage.setItem("date", date);
+      localStorage.setItem("time", time);
+      localStorage.setItem("activity", activity);
+
+      const newEntry = { date, time, activity };
+      const history = JSON.parse(localStorage.getItem("history")) || [];
+      history.push(newEntry);
+      localStorage.setItem("history", JSON.stringify(history));
+
+      navigateTo("confirmation");
+    });
+
+    // Tampilkan konfirmasi
+    function showConfirmation() {
+      document.getElementById("chosenDate").textContent = localStorage.getItem("date");
+      document.getElementById("chosenTime").textContent = localStorage.getItem("time");
+      document.getElementById("chosenActivity").textContent = localStorage.getItem("activity");
+    }
+
+    // Tampilkan histori
+    function showHistory() {
+      const history = JSON.parse(localStorage.getItem("history")) || [];
+      const historyList = document.getElementById("historyList");
+
+      if (history.length === 0) {
+        historyList.innerHTML = "<p>Belum ada pertemuan yang tersimpan 😢</p>";
+      } else {
+        historyList.innerHTML = history.map((item, index) => `
+          <div class="history-card">
+            <p><strong>Pertemuan ${index + 1}</strong></p>
+            <p>📅 Tanggal: ${item.date}</p>
+            <p>⏰ Waktu: ${item.time}</p>
+            <p>🎉 Aktivitas: ${item.activity}</p>
+          </div>
+        `).join("");
+      }
+    }
+
+    // Mode rahasia hapus data
+    let clickCount = 0;
+    let timer;
+    document.getElementById("secretTrigger").addEventListener("click", () => {
+      clickCount++;
+      if (clickCount === 3) {
+        document.getElementById("deleteBtnContainer").style.display = "block";
+        alert("Mode Rahasia Aktif 🔐");
+        clickCount = 0;
+        clearTimeout(timer);
+      }
+
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        clickCount = 0;
+      }, 1000);
+    });
+
+    function clearHistory() {
+      if (confirm("Yakin ingin menghapus semua riwayat?")) {
+        localStorage.removeItem("history");
+        showHistory();
+      }
+    }
+  </script>
 </body>
 </html>
